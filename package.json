@@ -1,0 +1,57 @@
+{
+  "name": "@autumnboy-studio/seasons",
+  "version": "0.1.0",
+  "description": "Beautiful falling autumn leaves for any website 🍂 Zero dependencies, fits every screen.",
+  "keywords": [
+    "autumn",
+    "fall",
+    "leaves",
+    "falling-leaves",
+    "seasons",
+    "animation",
+    "canvas",
+    "effect",
+    "decoration",
+    "website"
+  ],
+  "homepage": "https://autumnboy-travel.github.io/seasons/",
+  "bugs": {
+    "url": "https://github.com/autumnboy-travel/seasons/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/autumnboy-travel/seasons.git"
+  },
+  "license": "MIT",
+  "author": "autumnboy.travel",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./global": "./dist/seasons.global.js",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/seasons.global.js",
+  "jsdelivr": "./dist/seasons.global.js",
+  "bin": {
+    "seasons": "bin/seasons.js"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test",
+    "check": "npm run build && npm test && npm pack --dry-run",
+    "prepublishOnly": "npm run build && npm test"
+  }
+}

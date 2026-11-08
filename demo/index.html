@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>@autumnboy-studio/seasons · falling autumn leaves for any website</title>
+<meta name="description" content="Beautiful falling autumn leaves for any website. Zero dependencies, fits every screen.">
+<style>
+  :root { --bg: #f1e8dc; --card: #faf6ef; --line: #e4d9c9; --ink: #1f2a30; --muted: #6b6258; --dark: #1e2a33; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 680px; margin: 0 auto; padding: 48px 22px 64px; }
+  .brand { font-family: Georgia, "Times New Roman", serif; font-weight: 700; font-size: 18px; }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(34px, 8vw, 56px); line-height: 1.05; margin: 28px 0 12px; letter-spacing: -0.5px; }
+  p.lead { color: var(--muted); font-size: 18px; margin: 0 0 28px; }
+  pre { background: var(--dark); color: #f3e6d0; border-radius: 14px; padding: 16px 18px; overflow-x: auto; font: 14px/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; margin: 0 0 14px; }
+  .k { color: #e8a65c; } .s { color: #f6d38a; } .f { color: #d9b8ff; } .c { color: #8a7a66; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin: 28px 0; }
+  .row { display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: center; margin-bottom: 14px; }
+  label { font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  input[type=range] { width: 130px; accent-color: #c0652b; }
+  select { font: inherit; font-size: 14px; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--line); background: #fff; }
+  button { font: inherit; font-size: 15px; padding: 9px 18px; border-radius: 999px; border: 1px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; }
+  button.primary { background: var(--dark); color: #f4ede3; border-color: var(--dark); }
+  h2 { font-family: Georgia, "Times New Roman", serif; font-size: 22px; margin: 36px 0 10px; }
+  ul { padding-left: 20px; } li { margin: 4px 0; }
+  footer { margin-top: 48px; font-size: 13px; color: var(--muted); text-align: center; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<main>
+  <div class="brand">@autumnboy-studio/seasons</div>
+  <h1>npm install fall.</h1>
+  <p class="lead">Beautiful falling autumn leaves for any website. Zero dependencies, fits every screen.</p>
+
+  <pre><code><span class="c">// npm install @autumnboy-studio/seasons</span>
+<span class="k">import</span> { autumn } <span class="k">from</span> <span class="s">'@autumnboy-studio/seasons'</span>
+
+autumn.<span class="f">render</span>()</code></pre>
+  <pre><code><span class="c">&lt;!-- or, without npm --&gt;</span>
+&lt;script src=<span class="s">"https://cdn.jsdelivr.net/npm/@autumnboy-studio/seasons"</span>&gt;&lt;/script&gt;
+&lt;script&gt;Seasons.autumn.<span class="f">render</span>()&lt;/script&gt;</code></pre>
+
+  <div class="panel">
+    <div class="row">
+      <label>Leaves <input id="count" type="range" min="0" max="80" value="0"> <span id="countOut">auto</span></label>
+      <label>Speed <input id="speed" type="range" min="0.3" max="3" step="0.1" value="1"> <span id="speedOut">1</span></label>
+    </div>
+    <div class="row">
+      <label>Wind <input id="wind" type="range" min="-3" max="3" step="0.5" value="0"> <span id="windOut">0</span></label>
+      <label>Colours
+        <select id="colors"><option>mixed</option><option>golden</option><option>warm</option></select>
+      </label>
+    </div>
+    <div class="row" style="margin-bottom:0">
+      <button class="primary" id="toggle">Stop leaves</button>
+      <button id="pause">Pause</button>
+    </div>
+  </div>
+
+  <h2>Why it's nice</h2>
+  <ul>
+    <li>Adapts to any screen: phones get fewer leaves, big screens more, and it follows resizing and rotation.</li>
+    <li>Never blocks clicks, and is hidden from screen readers.</li>
+    <li>Pauses when the tab is hidden, and respects "reduce motion".</li>
+    <li>Tiny, with zero dependencies and no tracking.</li>
+  </ul>
+
+  <footer>made with love 🍂 by <a href="https://autumnboy-travel.pages.dev/">autumnboy.travel</a> · MIT License</footer>
+</main>
+<script src="./seasons.global.js"></script>
+<script>
+  var autumn = window.Seasons.autumn;
+  var $ = function (id) { return document.getElementById(id); };
+  function options() {
+    var count = Number($('count').value);
+    return {
+      count: count === 0 ? 'auto' : count,
+      speed: Number($('speed').value),
+      wind: Number($('wind').value),
+      colors: $('colors').value,
+      reducedMotion: 'ignore'
+    };
+  }
+  function update() {
+    $('countOut').textContent = $('count').value === '0' ? 'auto' : $('count').value;
+    $('speedOut').textContent = $('speed').value;
+    $('windOut').textContent = $('wind').value;
+    if (autumn.isRunning || $('toggle').dataset.on === '1') { autumn.render(options()); $('pause').textContent = 'Pause'; }
+  }
+  ['count', 'speed', 'wind', 'colors'].forEach(function (id) { $(id).addEventListener('input', update); });
+  $('toggle').addEventListener('click', function () {
+    var on = $('toggle').dataset.on === '1';
+    if (on) { autumn.stop(); $('toggle').dataset.on = '0'; $('toggle').textContent = 'Start leaves'; }
+    else { autumn.render(options()); $('toggle').dataset.on = '1'; $('toggle').textContent = 'Stop leaves'; }
+    $('pause').textContent = 'Pause';
+  });
+  $('pause').addEventListener('click', function () {
+    if ($('pause').textContent === 'Pause') { autumn.pause(); $('pause').textContent = 'Resume'; }
+    else { autumn.resume(); $('pause').textContent = 'Pause'; }
+  });
+  // The demo ignores "reduce motion" so everyone can see it; the package default respects it.
+  autumn.render(options());
+  $('toggle').dataset.on = '1';
+</script>
+</body>
+</html>
